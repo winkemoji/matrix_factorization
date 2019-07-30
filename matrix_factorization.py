@@ -2,6 +2,7 @@ import numpy as np
 
 __author__ = 'winkemoji'
 
+
 class matrix_factorization:
     def __init__(self, R, iter, learning_rate, regularization_param, hidden_factor):
         '''
@@ -28,7 +29,7 @@ class matrix_factorization:
         for it in range(self.iter):
             for i in range(len(self.R)):
                 for j in range(len(self.R[i])):
-                    if self.R[i][j] > 0:
+                     if self.R[i][j] > 0:
                         eij = self.R[i][j] - np.dot(self.P[i, :], self.Q[:, j])
                         for k in range(self.n_f):
                             self.P[i][k] = self.P[i][k] + self.lr * (2 * eij * self.Q[k][j] - self.rp * self.P[i][k])
@@ -36,7 +37,7 @@ class matrix_factorization:
             E = 0
             for i in range(len(self.R)):
                 for j in range(len(self.R[i])):
-                    if self.R[i][j] > 0:
+                     if self.R[i][j] > 0:
                         E = E + pow(self.R[i][j] - np.dot(self.P[i, :], self.Q[:, j]), 2)
                         for k in range(self.n_f):
                             E = E + (self.rp / 2) * (pow(self.P[i][k], 2) + pow(self.Q[k][j], 2))
@@ -49,12 +50,12 @@ class matrix_factorization:
                 break
         rs.update(P=self.P)
         rs.update(Q=self.Q)
-        rs.update(dot=np.dot(self.P, self.Q))
         return rs
 
 
-R = np.array([[2, 1], [2, 2]])
+R = np.array([[0, 0, 1], [2, 5 , 2]])
 
 mf = matrix_factorization(R=R, iter=5000, learning_rate=.002, regularization_param=0.02, hidden_factor=50)
 result = mf.fit(verbose=False)
-print(result['dot'])
+print(result['P'])
+print(result['Q'])
